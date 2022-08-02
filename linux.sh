@@ -47,11 +47,10 @@ cd ~/.tim-install || (echo "Could not go to the temporary install cache (~/.tim-
 SCRIPTS_URL_BASE=https://raw.githubusercontent.com/TIM-JYU/tim-installscripts/master
 
 # Download the scripts
-curl -s "$SCRIPTS_URL_BASE/common.sh" > common.sh
 curl -s "$SCRIPTS_URL_BASE/setup.sh" > setup.sh
 curl -s "$SCRIPTS_URL_BASE/$DOWNLOAD_CODE.sh" > install.sh
 
-chmod u+x common.sh setup.sh install.sh
+chmod u+x setup.sh install.sh
 
 echo "Running installation (you will be prompted for your password)..."
 echo "(You can also cancel the installation and run it later with \`sudo ~./tim-install/install.sh\`)"
