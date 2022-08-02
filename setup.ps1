@@ -17,7 +17,8 @@ param (
 $Cmd = $PSCommandPath
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
     if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-        $CommandLine = "-ExecutionPolicy Bypass -NoProfile -NonInteractive -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$Destination`" -Stage `"$Stage`" $($ScriptArgs -join " ")"
+        $EscapedDestination = [Management.Automation.WildcardPattern]::Escape($Destination).Replace("\", "\\")
+        $CommandLine = "-ExecutionPolicy Bypass -NoProfile -NonInteractive -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$EscapedDestination`" -Stage $Stage $($ScriptArgs -join " ")"
         Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
         Exit
     }
@@ -63,7 +64,8 @@ function Install-Dev-Deps {
 
 function Restart-Stage {
     Param ([string]$Target)
-    $CommandLine = "powershell -ExecutionPolicy Bypass -NoProfile -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$Destination`" -Stage `"$Stage`" $($ScriptArgs -join " ")"
+    $EscapedDestination = [Management.Automation.WildcardPattern]::Escape($Destination).Replace("\", "\\")
+    $CommandLine = "powershell -ExecutionPolicy Bypass -NoProfile -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$EscapedDestination`" -Stage $Target $($ScriptArgs -join " ")"
     Set-Location -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
     New-ItemProperty . TimInstall -Force -PropertyType String -Value $CommandLine
     Restart-Computer
