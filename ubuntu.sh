@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Stop running the script if an error occurs.
+set -e
+set -o pipefail
+
 # Install Docker.
 apt update
 apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common

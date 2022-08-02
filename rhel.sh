@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Stop running the script if an error occurs.
+set -e
+set -o pipefail
+
 # Install Docker and components
 yum -y module remove container-tools
 yum-config-manager -y --add-repo https://download.docker.com/linux/centos/docker-ce.repo
