@@ -18,7 +18,7 @@ Scripts to install a minimal instance of [TIM](https://github.com/TIM-JYU/TIM).
 Example
 
 ```bash
-curl -s http://get.tim.education/linux.sh | bash -s - --profile prod
+curl -sL http://get.tim.education/linux.sh | bash -s - --profile prod
 ```
 
 will download and install TIM into `/opt/tim` for production use. 
