@@ -11,21 +11,32 @@ Scripts to install a minimal instance of [TIM](https://github.com/TIM-JYU/TIM).
   * In addition to pulling source code (~100 MB), TIM writes all user documents to `/opt/tim/timApp/tim_files` so space requirements are flexible
   * The machine should have at least 20 GB of free space for normal use (<=500 concurrent users)
 
-## Install steps
+## Installing
 
-1. Download the scripts in the repo. The easiest way to do so is with `curl`:
+### Linux
+
+Example
 
 ```bash
-curl -s https://raw.githubusercontent.com/TIM-JYU/tim-installscripts/master/download.sh | bash
+curl -s http://get.tim.education/linux.sh | bash -s - --profile prod
 ```
 
-2. Run `./<distro>.sh <domain>` name where
+will download and install TIM into `/opt/tim` for production use. 
+`--profile` can be adjusted for different install profiles:
 
-  * `<distro>` is the Linux distribution to use. Currently available values are
+* `prod` - installs dependencies to run TIM in production
+* `dev` - installs dependencies to run TIM in development (installs NodeJS and PyCharm for development)
 
-    * `ubuntu` - Ubuntu LTS
-    * `rhel8` - RHEL 8
+### Windows
 
-  * `<domain>` is the domain name that TIM will be connected to. Make sure that the machine you're installing TIM on is reachable via the domain name.
+Example
 
-      * You can always change the domain later by editing `/opt/tim/variables.sh`
+```powershell
+. { iwr -useb http://get.tim.education/windows.ps1 } | iex; install -Profile prod
+```
+
+will download and install TIM into `C:\tim` for production use. 
+`-Profile` can be adjusted for different install profiles:
+
+* `prod` - installs dependencies to run TIM in production
+* `dev` - installs dependencies to run TIM in development (installs NodeJS and PyCharm for development)
