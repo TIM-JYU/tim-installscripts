@@ -53,5 +53,5 @@ curl -s "$SCRIPTS_URL_BASE/$DOWNLOAD_CODE.sh" > install.sh
 chmod u+x setup.sh install.sh
 
 echo "Running installation (you will be prompted for your password)..."
-echo "(You can also cancel the installation and run it later with \`sudo ~./tim-install/install.sh\`)"
+echo "(You can also cancel the installation and run it later with \`sudo ~/.tim-install/install.sh\`)"
 sudo TIM_USER="$USER" ./install.sh "$@"
