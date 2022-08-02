@@ -17,10 +17,6 @@ Arguments:
     exit 0
 fi
 
-echo "$*"
-
-exit 0
-
 # Determine the distro using /etc/os-release
 if [ -f /etc/os-release ]; then
     # shellcheck source=/dev/null
