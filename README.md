@@ -32,11 +32,11 @@ will download and install TIM into `/opt/tim` for production use.
 Example
 
 ```powershell
-. { iwr -useb http://get.tim.education/windows.ps1 } | iex; install -Profile prod
+. { iwr -useb http://get.tim.education/windows.ps1 } | iex; install -InstallProfile prod
 ```
 
 will download and install TIM into `C:\tim` for production use. 
-`-Profile` can be adjusted for different install profiles:
+`-InstallProfile` can be adjusted for different install profiles:
 
 * `prod` - installs dependencies to run TIM in production
 * `dev` - installs dependencies to run TIM in development (installs NodeJS and PyCharm for development)

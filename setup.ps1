@@ -2,10 +2,10 @@ param (
     [Parameter(Mandatory)]
     [ValidateSet("prod", "dev", "test")]
     [string]
-    $Profile = "prod",
+    $InstallProfile,
     [Parameter(Mandatory = $false)]
     [string]
-    $Destination = "C:\",
+    $Destination = "C:\\",
     [Parameter(Mandatory = $false)]
     [string]
     $Stage = "",
@@ -14,18 +14,10 @@ param (
     $ScriptArgs
 )
 
-function Get-Parameters {
-    Param ([hashtable]$NamedParameters)
-    return ($NamedParameters.GetEnumerator() | ForEach-Object { "-$($_.Key) `"$($_.Value)`"" }) -join " "
-}
-
-
 $Cmd = $PSCommandPath
-$Args1 = Get-Parameters $MyInvocation.BoundParameters
-$Args2 = $MyInvocation.UnboundArguments
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
     if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-        $CommandLine = "-ExecutionPolicy Bypass -NoProfile -NonInteractive -NoExit -File `"" + $Cmd + "`" " + $Args1 + " " + $Args2
+        $CommandLine = "-ExecutionPolicy Bypass -NoProfile -NonInteractive -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$Destination`" -Stage `"$Stage`" $($ScriptArgs -join " ")"
         Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
         Exit
     }
@@ -58,7 +50,7 @@ function Install-Main-Deps {
 
 function Install-Dev-Deps {
     # if Profile is dev, install dev dependencies
-    if ($Profile -eq "dev") {
+    if ($InstallProfile -eq "dev") {
         Write-Output "Installing NodeJS"
         winget install --accept-source-agreements --accept-package-agreements -e --id OpenJS.NodeJS.LTS
         Reset-EnvVars
@@ -71,7 +63,7 @@ function Install-Dev-Deps {
 
 function Restart-Stage {
     Param ([string]$Target)
-    $CommandLine = "powershell -ExecutionPolicy Bypass -NoProfile -NoExit -File `"" + $Cmd + "`" -Stage `"" + $Target + "`" " + $Args1 + " " + $Args2
+    $CommandLine = "powershell -ExecutionPolicy Bypass -NoProfile -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$Destination`" -Stage `"$Stage`" $($ScriptArgs -join " ")"
     Set-Location -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
     New-ItemProperty . TimInstall -Force -PropertyType String -Value $CommandLine
     Restart-Computer
@@ -100,7 +92,7 @@ function Install-TIM {
     # Download TIM
     git clone "https://github.com/TIM-JYU/TIM.git" .
     # Because we don't directly have shell, run py command manually
-    py -m cli.tim setup --profile $Profile $ScriptArgs
+    py -m cli.tim setup --profile $InstallProfile $ScriptArgs
 }
 
 if ($Stage -eq "") {
