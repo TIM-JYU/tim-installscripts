@@ -14,18 +14,19 @@ param (
     $ScriptArgs
 )
 
+$ErrorActionPreference = "Stop"
 $Cmd = $PSCommandPath
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
     if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
         $EscapedDestination = [Management.Automation.WildcardPattern]::Escape($Destination).Replace("\", "\\")
-        $CommandLine = "-ExecutionPolicy Bypass -NoProfile -NonInteractive -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$EscapedDestination`" -Stage $Stage $($ScriptArgs -join " ")"
+        $CommandLine = "-ExecutionPolicy Bypass -NoProfile -NonInteractive -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$EscapedDestination`" -Stage `"$Stage`" $($ScriptArgs -join " ")"
         Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
         Exit
     }
 }
 
 function Install-Winget {
-    if (!(Get-Command -Name winget)) {
+    if (!(Get-Command -Name winget -ErrorAction SilentlyContinue)) {
         if (!(Test-Path "$HOME\.winget")) {
             New-Item -Path "$HOME\.winget" -ItemType Directory -Force
         }
@@ -65,7 +66,7 @@ function Install-Dev-Deps {
 function Restart-Stage {
     Param ([string]$Target)
     $EscapedDestination = [Management.Automation.WildcardPattern]::Escape($Destination).Replace("\", "\\")
-    $CommandLine = "powershell -ExecutionPolicy Bypass -NoProfile -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$EscapedDestination`" -Stage $Target $($ScriptArgs -join " ")"
+    $CommandLine = "powershell -ExecutionPolicy Bypass -NoProfile -NoExit -File `"$Cmd`" -InstallProfile $InstallProfile -Destination `"$EscapedDestination`" -Stage `"$Target`" $($ScriptArgs -join " ")"
     Set-Location -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
     New-ItemProperty . TimInstall -Force -PropertyType String -Value $CommandLine
     Restart-Computer
@@ -79,6 +80,10 @@ function Install-Docker {
 
 function Update-Wsl2 {
     Write-Output "Updating WSL2 kernel"
+    Write-Output "NOTE: While doing this, Docker Desktop will ask to accept the EULA"
+    Write-Output "Accept EULA while the kernel is being updated in the background"
+    Write-Output "Ignore any Docker warning boxes that may appear"
+    Write-Output "This will take a while..."
     wsl --update
     Restart-Stage "InstallTIM"
 }
@@ -93,11 +98,14 @@ function Install-TIM {
     Set-Location -Path "$Destination\tim"
     # Download TIM
     git clone "https://github.com/TIM-JYU/TIM.git" .
+    Write-Output "Configuring TIM. If Docker errors occur here, open TIM folder in Git Bash and run"
+    Write-Output "./tim setup --profile $InstallProfile --force"
     # Because we don't directly have shell, run py command manually
     py -m cli.tim setup --profile $InstallProfile $ScriptArgs
 }
 
 if ($Stage -eq "") {
+    Install-Winget
     Install-Main-Deps
     Install-Dev-Deps
     Install-Docker
