@@ -18,15 +18,13 @@ chmod +x /usr/local/bin/docker-compose
 
 if [[ "$*" == *"--profile dev"* ]]; then
     # Download nodejs, npm and pip
-    apt install -y nodejs npm python3-pip dbus-x11
+    apt install -y nodejs npm python3-pip python3-venv dbus-x11
     # Downgrade npm to 6.x
     npm install -g npm@6
     # install snap
     apt install -y snapd
     # install pycharm
     snap install pycharm-professional --classic
-    # Remove possibly conflicting packages
-    apt remove -y python3-debian python3-distro-info
 fi
 
 # shellcheck disable=SC1091
