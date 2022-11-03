@@ -17,6 +17,8 @@ curl -LO https://desktop.docker.com/linux/main/amd64/docker-desktop-4.13.1-x86_6
 sudo pacman -U ./docker-desktop-4.13.1-x86_64.pkg.tar.zst
 systemctl --user start docker-desktop
 systemctl --user enable docker-desktop
+# Create docker group in anticipation of later setup step
+sudo groupadd docker
 
 if [[ "$*" == *"--profile dev"* ]]; then
     # Download nodejs, npm and pip
