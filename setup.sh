@@ -8,12 +8,12 @@ if [ -z "$TIM_USER" ]; then
     TIM_USER=${USER}
 fi
 
-/usr/sbin/usermod -aG docker "${TIM_USER}"
+sudo /usr/sbin/usermod -aG docker "${TIM_USER}"
 
 # Create TIM folder and adjust permissions.
-mkdir -p /opt/tim
-chown "${TIM_USER}":docker /opt/tim
-chmod ug+rwxs /opt/tim
+sudo mkdir -p /opt/tim
+sudo chown "${TIM_USER}":docker /opt/tim
+sudo chmod ug+rwxs /opt/tim
 
 # Install TIM.
 cd /opt/tim || (echo "Could cd to /opt/tim directory. Is it there and are the permissions OK?" && exit 1)
