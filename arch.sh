@@ -5,7 +5,8 @@ set -e
 set -o pipefail
 
 # Install Docker.
-sudo pacman -Syu
+# Force refresh of package databases
+sudo pacman -Syy
 # Required for non-Gnome desktop environments
 sudo pacman -S gnome-terminal
 sudo pacman -S ca-certificates curl gnupg python3 git
@@ -15,8 +16,8 @@ tar xzvf docker-20.10.9.tgz
 sudo cp ./docker/* /usr/bin
 curl -LO https://desktop.docker.com/linux/main/amd64/docker-desktop-4.13.1-x86_64.pkg.tar.zst
 sudo pacman -U ./docker-desktop-4.13.1-x86_64.pkg.tar.zst
-systemctl --user start docker-desktop
 systemctl --user enable docker-desktop
+systemctl --user start docker-desktop
 # Create docker group in anticipation of later setup step
 sudo groupadd docker
 
