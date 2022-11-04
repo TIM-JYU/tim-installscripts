@@ -23,7 +23,7 @@ sudo groupadd docker
 
 if [[ "$*" == *"--profile dev"* ]]; then
     # Download nodejs, npm and pip
-    sudo pacman -S nodejs npm python3-pip python3-venv dbus-x11
+    sudo pacman -S nodejs npm python-pip python-virtualenv dbus-x11
     # Downgrade npm to 6.x
     npm install -g npm@6
     # install snap
