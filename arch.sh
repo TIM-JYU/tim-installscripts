@@ -25,11 +25,11 @@ if [[ "$*" == *"--profile dev"* ]]; then
     # Download nodejs, npm and pip
     sudo pacman -S nodejs npm python-pip python-virtualenv dbus-x11
     # Downgrade npm to 6.x
-    npm install -g npm@6
+    sudo npm install -g npm@6
     # install snap
     sudo pacman -S snapd
     # install pycharm
-    snap install pycharm-professional --classic
+    sudo snap install pycharm-professional --classic
 fi
 
 # shellcheck disable=SC1091
