@@ -4,28 +4,24 @@
 set -e
 set -o pipefail
 
-# Install Docker.
 # Force refresh of package databases
-sudo pacman -Syy
-# Required for non-Gnome desktop environments
-sudo pacman -S gnome-terminal
-sudo pacman -S --needed ca-certificates curl gnupg python3 git
-# Community provided binaries, forgo Docker Desktop
-sudo pacman -S --needed docker
-sudo pacman -S --needed docker-compose
-systemctl --user enable docker.service
-systemctl --user enable containerd.service
-systemctl --user start docker.service
-# Create docker group in anticipation of later setup step
-sudo groupadd docker
+pacman -Syy --noconfirm
+
+# Install tools needed to run TIM
+pacman -S --noconfirm --needed ca-certificates curl gnupg python3 git
+
+# Install Docker
+pacman -S --noconfirm --needed gnome-terminal docker docker-compose
+systemctl enable docker.service
+systemctl start docker.service
 
 if [[ "$*" == *"--profile dev"* ]]; then
     # Download nodejs, npm and pip
-    sudo pacman -S --needed nodejs npm python-pip python-virtualenv
+    sudo pacman -S --noconfirm --needed nodejs npm python-pip python-virtualenv
     # Downgrade npm to 6.x
     sudo npm install -g npm@6
     # install snap
-    sudo pacman -S --needed snapd
+    sudo pacman -S --noconfirm --needed snapd
     # symlink workaround for snap
     sudo ln -s /var/lib/snapd/snap /snap
     # install pycharm
