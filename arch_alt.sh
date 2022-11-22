@@ -17,15 +17,15 @@ systemctl start docker.service
 
 if [[ "$*" == *"--profile dev"* ]]; then
     # Download nodejs, npm and pip
-    sudo pacman -S --noconfirm --needed nodejs npm python-pip python-virtualenv
+    pacman -S --noconfirm --needed nodejs npm python-pip python-virtualenv
     # Downgrade npm to 6.x
-    sudo npm install -g npm@6
+    npm install -g npm@6
     # install snap
-    sudo pacman -S --noconfirm --needed snapd
+    pacman -S --noconfirm --needed snapd
     # symlink workaround for snap
-    sudo ln -s /var/lib/snapd/snap /snap
+    ln -s /var/lib/snapd/snap /snap
     # install pycharm
-    sudo snap install pycharm-professional --classic
+    snap install pycharm-professional --classic
 fi
 
 # shellcheck disable=SC1091
