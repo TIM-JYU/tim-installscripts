@@ -4,38 +4,28 @@
 set -e
 set -o pipefail
 
-# Install Docker.
 # Force refresh of package databases
-sudo pacman -Syy
-# Required for non-Gnome desktop environments
-sudo pacman -S gnome-terminal
-sudo pacman -S --needed ca-certificates curl gnupg python3 git
-# Download and install Docker static binaries
-if ! [ -f ./docker-20.10.9.tgz ]; then
-    curl -LO https://download.docker.com/linux/static/stable/x86_64/docker-20.10.9.tgz
-fi
-tar xzvf docker-20.10.9.tgz
-sudo cp ./docker/* /usr/bin
-if ! [ -f ./docker-desktop-4.13.1-x86_64.pkg.tar.zst ]; then
-    curl -LO https://desktop.docker.com/linux/main/amd64/docker-desktop-4.13.1-x86_64.pkg.tar.zst
-fi
-sudo pacman -U ./docker-desktop-4.13.1-x86_64.pkg.tar.zst
-systemctl --user enable docker-desktop
-systemctl --user start docker-desktop
-# Create docker group in anticipation of later setup step
-sudo groupadd docker
+pacman -Syy --noconfirm
+
+# Install tools needed to run TIM
+pacman -S --noconfirm --needed ca-certificates curl gnupg python3 git
+
+# Install Docker
+pacman -S --noconfirm --needed gnome-terminal docker docker-compose
+systemctl enable docker.service
+systemctl start docker.service
 
 if [[ "$*" == *"--profile dev"* ]]; then
     # Download nodejs, npm and pip
-    sudo pacman -S --needed nodejs npm python-pip python-virtualenv
+    pacman -S --noconfirm --needed nodejs npm python-pip python-virtualenv
     # Downgrade npm to 6.x
-    sudo npm install -g npm@6
+    npm install -g npm@6
     # install snap
-    sudo pacman -S --needed snapd
+    pacman -S --noconfirm --needed snapd
     # symlink workaround for snap
-    sudo ln -s /var/lib/snapd/snap /snap
+    ln -s /var/lib/snapd/snap /snap
     # install pycharm
-    sudo snap install pycharm-professional --classic
+    snap install pycharm-professional --classic
 fi
 
 # shellcheck disable=SC1091
