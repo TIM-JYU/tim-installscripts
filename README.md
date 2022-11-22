@@ -7,6 +7,7 @@ Scripts to install a minimal instance of [TIM](https://github.com/TIM-JYU/TIM).
 * One of the following distros
   * Ubuntu LTS
   * Red Hat Enterprise Linux 8 
+  * Arch Linux / Manjaro
 * Permission to write to `/opt` (script creates `/opt/tim`)
   * In addition to pulling source code (~100 MB), TIM writes all user documents to `/opt/tim/timApp/tim_files` so space requirements are flexible
   * The machine should have at least 20 GB of free space for normal use (<=500 concurrent users)
