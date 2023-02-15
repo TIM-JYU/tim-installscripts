@@ -22,9 +22,9 @@ if [[ "$*" == *"--profile dev"* ]]; then
     # Downgrade npm to 6.x
     npm install -g npm@6
     # install snap
-    yum install -y snapd
+    #yum install -y snapd
     # install pycharm
-    snap install pycharm-professional --classic
+    #snap install pycharm-professional --classic
 fi
 
 # shellcheck disable=SC1091
