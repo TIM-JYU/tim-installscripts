@@ -19,7 +19,7 @@ Scripts to install a minimal instance of [TIM](https://github.com/TIM-JYU/TIM).
 Example
 
 ```bash
-curl -sL http://get.tim.education/linux.sh | bash -s - --profile prod
+curl -sL https://get.tim.education/linux.sh | bash -s - --profile prod
 ```
 
 will download and install TIM into `/opt/tim` for production use. 
@@ -33,7 +33,7 @@ will download and install TIM into `/opt/tim` for production use.
 Example
 
 ```powershell
-. { iwr -useb http://get.tim.education/windows.ps1 } | iex; install -InstallProfile prod
+. { iwr -useb https://get.tim.education/windows.ps1 } | iex; install -InstallProfile prod
 ```
 
 will download and install TIM into `C:\tim` for production use. 
