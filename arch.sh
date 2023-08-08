@@ -22,8 +22,11 @@ if [[ "$*" == *"--profile dev"* ]]; then
     npm install -g npm@6
     # install snap
     pacman -S --noconfirm --needed snapd
-    # symlink workaround for snap
-    ln -s /var/lib/snapd/snap /snap
+    # don't create the symlink if it already exists, as the script will error out
+    if [ ! -L "/snap" ]; then
+        # symlink workaround for snap
+        ln -s /var/lib/snapd/snap /snap
+    fi
     # install pycharm
     snap install pycharm-professional --classic
 fi
