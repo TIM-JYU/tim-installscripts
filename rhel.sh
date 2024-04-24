@@ -6,7 +6,7 @@ set -o pipefail
 
 # Install Docker and components
 yum -y module remove container-tools
-yum-config-manager -y --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum config-manager -y --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 yum -y install docker-ce git python3
 systemctl start docker
 systemctl enable docker.service
