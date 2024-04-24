@@ -13,7 +13,7 @@ systemctl enable docker.service
 systemctl enable containerd.service
 
 # Install Docker Compose.
-curl -L "https://github.com/docker/compose/releases/download/v2.9.0/docker-compose-$(uname -s)-$(uname -m)" > /bin/docker-compose
+curl -L "https://github.com/docker/compose/releases/download/v2.26.1/docker-compose-$(uname -s)-$(uname -m)" > /bin/docker-compose
 chmod +x /bin/docker-compose
 
 if [[ "$*" == *"--profile dev"* ]]; then
