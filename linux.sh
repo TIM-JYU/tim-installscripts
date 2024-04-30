@@ -55,6 +55,11 @@ curl -s "$SCRIPTS_URL_BASE/$DOWNLOAD_CODE.sh" > install.sh
 
 chmod u+x setup.sh install.sh
 
+# Check if TIM_USER is already set, otherwise use the current user
+if [ -z "$TIM_USER" ]; then
+    TIM_USER="$USER"
+fi
+
 echo "Running installation (you will be prompted for your password)..."
 echo "(You can also cancel the installation and run it later with \`sudo ~/.tim-install/install.sh\`)"
-sudo TIM_USER="$USER" ./install.sh "$@"
+sudo TIM_USER="$TIM_USER" ./install.sh "$@"
