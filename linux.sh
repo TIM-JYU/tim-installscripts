@@ -34,7 +34,7 @@ if [[ "$DISTRO" == "ubuntu" || "$SIMILAR_DISTRO" == *"ubuntu"* ]]; then
     DOWNLOAD_CODE="ubuntu"
 elif [[ "$DISTRO" == "rhel" || "$SIMILAR_DISTRO" == *"rhel"* ]]; then
     DOWNLOAD_CODE="rhel"
-elif [[ "$DISTRO" == "manjaro" || "$SIMILAR_DISTRO" == *"arch"* ]]; then
+elif [[ "$DISTRO" == "arch" || "$DISTRO" == "manjaro" || "$SIMILAR_DISTRO" == *"arch"* ]]; then
     DOWNLOAD_CODE="arch"
 else
     echo "Distro $DISTRO is not supported. Exiting."
