@@ -25,10 +25,13 @@ if [[ "$*" == *"--profile dev"* ]]; then
     # note: snapd isn't officially available for vanilla arch, so we install it from AUR
     if [ "$DISTRO" == "arch" ]; then
         # cd ~/.tim-install || (echo "Could not go to the temporary install cache (~/.tim-install), is the folder writable?" && exit 1)
-        git clone https://aur.archlinux.org/snapd.git && cd ~/.tim-install/snapd
+        git clone --quiet https://aur.archlinux.org/snapd.git
+        chmod -R o+w ./snapd && cd ./snapd
+        sed -i 's/-trimpath/-trimpath -buildvcs=false/' PKGBUILD
         # install deps, build package and install it
         # the locale setting LC_ALL=C needs to be passed to makepkg
-        LC_ALL=C makepkg -s --noconfirm --needed -i
+        sudo -u "$TIM_USER" LC_ALL=C makepkg -s -i --noconfirm --needed --clean
+        cd ..
     else
         # manjaro has pre-built snapd in the official repos
         pacman -S --noconfirm --needed snapd
@@ -39,9 +42,12 @@ if [[ "$*" == *"--profile dev"* ]]; then
         # symlink workaround for snap
         ln -s /var/lib/snapd/snap /snap
     fi
+    # make sure the snapd service is running
+    systemctl start snapd
     # install pycharm
     snap install pycharm-professional --classic
 fi
 
 # shellcheck disable=SC1091
+echo "Running TIM setup..."
 source ./setup.sh "$@"
