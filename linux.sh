@@ -62,4 +62,4 @@ fi
 
 echo "Running installation (you will be prompted for your password)..."
 echo "(You can also cancel the installation and run it later with \`sudo ~/.tim-install/install.sh\`)"
-sudo TIM_USER="$TIM_USER" ./install.sh "$@"
+sudo TIM_USER="$TIM_USER" DISTRO="$DISTRO" ./install.sh "$@"
