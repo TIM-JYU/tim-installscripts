@@ -24,7 +24,7 @@ if [[ "$*" == *"--profile dev"* ]]; then
     echo "Installing Snap environment"
     # note: snapd isn't officially available for vanilla arch, so we install it from AUR
     if [ "$DISTRO" == "arch" ]; then
-        cd ~/.tim-install
+        # cd ~/.tim-install || (echo "Could not go to the temporary install cache (~/.tim-install), is the folder writable?" && exit 1)
         git clone https://aur.archlinux.org/snapd.git && cd ~/.tim-install/snapd
         # install deps, build package and install it
         # the locale setting LC_ALL=C needs to be passed to makepkg
