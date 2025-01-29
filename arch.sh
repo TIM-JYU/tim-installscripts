@@ -7,8 +7,10 @@ set -o pipefail
 # Force refresh of package databases
 pacman -Syy --noconfirm
 
-# Install tools needed to run TIM
-pacman -S --noconfirm --needed ca-certificates curl gnupg python3 git
+# Install tools needed to build & run TIM
+# Arch installs python3.13 by default, and qulacs doesn't yet have a pre-built package for it,
+# so it needs to be built from source and that requires installing cmake and boost libraries.
+pacman -S --noconfirm --needed ca-certificates curl gnupg python3 git cmake boost
 
 # Install Docker
 pacman -S --noconfirm --needed gnome-terminal docker docker-compose
